@@ -93,14 +93,17 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         
         Product *p = [self.company.productsList objectAtIndex:indexPath.row];
+        
+        [self.dAO deleteManagedObject:p];
+        
         [self.company.productsList removeObjectAtIndex:indexPath.row];
+        
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
             }
+    
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }
-    
-
+    }µ
 }
 
 

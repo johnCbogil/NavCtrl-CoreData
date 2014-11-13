@@ -225,6 +225,8 @@
                 }
             }
         }
+    
+
 
     
 }
@@ -232,14 +234,11 @@
 
 
 
+-(void)deleteManagedObject:(NSManagedObject*)p{
+    [self.managedObjectContext deleteObject:p];
+}
 
-//
-//NSError *error;
-////     Save the objects
-//if(![[self managedObjectContext]save:&error])
-//{
-//    NSLog(@"Error %@", error);
-//}
+
 
 
 
