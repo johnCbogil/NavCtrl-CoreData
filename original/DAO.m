@@ -20,13 +20,87 @@
     return context;
 }
 
-
-
-// Create managed objects
--(void)createManagedObjects
-{
+-(void)checkForCoreData {
+    
+    NSFetchRequest *productRequest = [[NSFetchRequest alloc]init];
+    NSEntityDescription *productEntity = [NSEntityDescription entityForName:@"ManagedProduct"inManagedObjectContext:self.managedObjectContext];
+    [productRequest setEntity:productEntity];
+    NSPredicate *productPredicate = [NSPredicate predicateWithFormat:@"name != ''"];
+    [productRequest setPredicate:productPredicate];
+    NSError *error = nil;
+    NSUInteger count = [self.managedObjectContext countForFetchRequest:productRequest error:&error];
 
     
+    if(count==0) {
+        [self createManagedObjects];
+    } else {
+        [self fetchManagedObjects];
+    }
+}
+
+-(void)fetchManagedObjects{
+        // Fetch Companies
+        NSFetchRequest *companiesFetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *companiesEntity = [NSEntityDescription entityForName:@"ManagedCompany" inManagedObjectContext:self.managedObjectContext];
+        [companiesFetchRequest setEntity:companiesEntity];
+        NSError *error;
+        NSArray *fetchedCompaniesObjects = [self.managedObjectContext executeFetchRequest:companiesFetchRequest error:&error];
+        if(fetchedCompaniesObjects != nil)
+        {
+            // Convert managedProducts to products
+            self.companyList = [[NSMutableArray alloc]init];
+            for(int i=0; i<fetchedCompaniesObjects.count; i++)
+            {
+                // Initialize a new product for each managedProduct
+                Company *company = [[Company alloc]init];
+                
+                // name is a get method sent to managedCompanyObject[i]
+                company.name = [fetchedCompaniesObjects[i] name];
+                id compID = [fetchedCompaniesObjects[i] valueForKey:@"companyID"];
+                company.companyID = [compID intValue];
+                company.logo = [fetchedCompaniesObjects[i] logo];
+                
+                // Add products to productsList
+                [self.companyList addObject:company];
+                NSLog(@"%@", self.companyList[i]);
+            }
+        
+        // Fetch Products
+        NSFetchRequest *productsFetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *productsEntity = [NSEntityDescription entityForName:@"ManagedProduct" inManagedObjectContext:self.managedObjectContext];
+        [productsFetchRequest setEntity:productsEntity];
+        NSError *error;
+        NSArray *fetchedProductsObjects = [self.managedObjectContext executeFetchRequest:productsFetchRequest error:&error];
+        if(fetchedProductsObjects != nil)
+        {
+            // Convert managedProducts to products
+            self.productsList = [[NSMutableArray alloc]init];
+            for(int i=0; i<fetchedProductsObjects.count; i++)
+            {
+                // Initialize a new product for each managedProduct
+                Product *product = [[Product alloc]init];
+                
+                // name is a get method sent to managedCompanyObject[i]
+                product.name = [fetchedProductsObjects[i] name];
+                id prodID = [fetchedProductsObjects[i] valueForKey:@"productID"];
+                product.productID = [prodID intValue];
+                product.url = [fetchedProductsObjects[i] url];
+                product.image = [fetchedProductsObjects[i] image];
+                
+                // Add products to productsList
+                [self.productsList addObject:product];
+                NSLog(@"%@", self.productsList[i]);
+            }
+            
+            [self addProductsToCompanies];
+        }
+        
+    }
+    
+    }
+
+-(void)createManagedObjects{
+
     // APPLE
     NSManagedObject *apple = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedCompany" inManagedObjectContext:[self managedObjectContext]];
     [apple setValue:@"Apple" forKey:@"name"];
@@ -125,79 +199,11 @@
     [chromecast setValue:@"4" forKey:@"productID"];
     [chromecast setValue:@"/Users/adityanarayan/Dropbox/JohnB/Week 3 - NavCtrl/devices/chromecast.jpg" forKey:@"image"];
     [chromecast setValue:@"http://www.google.com/chrome/devices/chromecast/" forKey:@"url"];
-    
-    
-    // Initialize a fetch request
-    NSFetchRequest *companyRequest = [[NSFetchRequest alloc] init];
-    NSFetchRequest *productRequest = [[NSFetchRequest alloc]init];
-    
-    // Describe the entity for CoreData
-    NSEntityDescription *companyEntity = [NSEntityDescription entityForName:@"ManagedCompany"inManagedObjectContext:self.managedObjectContext];
-    NSEntityDescription *productEntity = [NSEntityDescription entityForName:@"ManagedProduct"inManagedObjectContext:self.managedObjectContext];
-    
-    // Sets entity
-    [companyRequest setEntity:companyEntity];
-    [productRequest setEntity:productEntity];
-    
-    // Query for all names that are not null
-    NSPredicate *companyPredicate = [NSPredicate predicateWithFormat:@"name != ''"];
-    NSPredicate *productPredicate = [NSPredicate predicateWithFormat:@"name != ''"];
-    
-    // Sets predicate
-    [companyRequest setPredicate:companyPredicate];
-    [productRequest setPredicate:productPredicate];
-    
-    // Create an error pointer
-    NSError *error;
-    
-    // Store the result of the fetch request in a managedCompanyArray
-    NSArray *managedCompanyArray = [self.managedObjectContext executeFetchRequest:companyRequest error:&error];
-    NSArray *managedProductArray = [self.managedObjectContext executeFetchRequest:productRequest error:&error];
-    
-    // Initialize companyList and productList properties
-    self.companyList = [[NSMutableArray alloc]init];
-    self.productsList = [[NSMutableArray alloc]init];
-    
-    
-    // Convert manageCompanies to companies
-    for(int i=0; i<managedCompanyArray.count; i++)
-    {
-        // Initialize a new company for each managedCompany
-        Company *company = [[Company alloc]init];
-        
-        // name is a get method sent to managedComapnyObject[i]
-        company.name =  [managedCompanyArray[i] name];
-        company.logo = [managedCompanyArray[i] logo];
-        id compID = [managedCompanyArray[i] valueForKey:@"companyID"];
-        company.companyID = [compID intValue];
-        
-        // Add companies to companyList
-        [self.companyList addObject:company];
-        NSLog(@"%@", self.companyList[i]);
-    }
-    
-    // Convert managedProducts to products
-    for(int i=0; i<managedProductArray.count; i++)
-    {
-        // Initialize a new product for each managedProduct
-        Product *product = [[Product alloc]init];
-        
-        // name is a get method sent to managedCompanyObject[i]
-        product.name = [managedProductArray[i] name];
-        //product.productID = [managedProductArray[i] productID];
-        id prodID = [managedProductArray[i] valueForKey:@"productID"];
-        product.productID = [prodID intValue];
-        product.url = [managedProductArray[i] url];
-        product.image = [managedProductArray[i] image];
-        
-        // Add products to productsList
-        [self.productsList addObject:product];
-        NSLog(@"%@", self.productsList[i]);
-    }
-    
-    }
 
-
+    
+    [self fetchManagedObjects];
+    [self addProductsToCompanies];
+}
 
 -(void)addProductsToCompanies{
         
@@ -225,98 +231,27 @@
                 }
             }
         }
-    
-
-
-    
 }
 
+-(void)deleteManagedObject:(NSString*)product{
+    
+    NSEntityDescription *productEntity=[NSEntityDescription entityForName:@"ManagedProduct" inManagedObjectContext:self.managedObjectContext];
+    NSFetchRequest *fetch=[[NSFetchRequest alloc] init];
+    [fetch setEntity:productEntity];
+    NSPredicate *p=[NSPredicate predicateWithFormat:@"name == %@", product];
+    [fetch setPredicate:p];
 
-
-
--(void)deleteManagedObject:(NSManagedObject*)p{
-    [self.managedObjectContext deleteObject:p];
+    NSError *fetchError;
+    NSArray *fetchedProducts=[self.managedObjectContext executeFetchRequest:fetch error:&fetchError];
+    
+    for (NSManagedObject *product in fetchedProducts) {
+        [self.managedObjectContext deleteObject:product];
+    }
+    NSError *error = nil;
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Can't Delete! %@ %@", error, [error localizedDescription]);
+        return;
 }
-
-
-
-
-
-
-
-
-
-    
-    
-
-    
-
-
-
-
-
-
-
-//use NSPredicate to ask context for companies and products as an array
-//
-//    NSPredicate *predicate = [NSPredicate predicateWithFormat:
-//                              @"company.name like %@", self.managedCompanyList];
-//
-//    NSLog(@"%@", predicate);
-
-
-
-
-//    self.managedCompanyList = [[NSMutableArray alloc]init];
-//    [self.managedCompanyList addObject:apple];
-//    [self.managedCompanyList addObject:samsung];
-//    [self.managedCompanyList addObject:amazon];
-//    [self.managedCompanyList addObject:google];
-//
-//    self.managedProductsList = [[NSMutableArray alloc]init];
-//    [self.managedProductsList addObject:iPodTouch];
-//    [self.managedProductsList addObject:iPad];
-//    [self.managedProductsList addObject:iPhone];
-
-
-
-
-//-(void)addProductsToCompanies{
-//    
-//    // Iterate through each managedCompany
-//    for(int i=0; i<[self.companyList count]; i++)
-//    {
-//        // Assign each managedCompany to its own company object
-//        Company *company = [[Company alloc]init];
-//        company.name = [self.companyList[i] name];
-//        
-//        // Initialize productsList property
-//        company.productsList = [[NSMutableArray alloc]init];
-//        
-//        NSManagedObject *compFromCoreData = self.companyList[i];
-//        
-//        //NSString * className = NSStringFromClass([compFromCoreData class]);
-//        
-//        id compID = [compFromCoreData valueForKey:@"companyID"];
-//        
-//        
-//        // Iterate through each managedProduct
-//        for(int j=0; j<[self.productsList count]; j++)
-//        {
-//            // Assign each product to its own product object
-//            Product *product = self.productsList[j];
-//            
-//            // If the companyID's match
-//            if(compID == product.productID){
-//                
-//                // Add the product to the appropriate company's productList
-//                [company.productsList addObject: product];
-//                
-//            }
-//        }
-//    }
-//    
-//    
-
+}
 
 @end

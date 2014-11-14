@@ -25,6 +25,9 @@
 -(void)createManagedObjects;
 -(void)addProductsToCompanies;
 -(void)deleteManagedObject:(NSManagedObject*)p;
+-(void)checkForCoreData;
+-(void)fetchManagedObjects;
+
 
 
 - (NSManagedObjectContext *)managedObjectContext;

@@ -14,8 +14,8 @@
 
 @implementation ChildViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
+
+- (id)initWithStyle:(UITableViewStyle)style{
     self = [super initWithStyle:style];
     if (self) {
     }
@@ -39,15 +39,13 @@
     [self.tableView reloadData];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
 }
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
 }
 
@@ -56,8 +54,6 @@
     return [self.company.productsList count];
 }
 
-
-// Ask the data source for a cell to insert in a particular location
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
@@ -66,13 +62,10 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    // take one company product and create one product object from it
     Product *product = [self.company.productsList objectAtIndex:[indexPath row]];
     
-    // Display the appropriate product name
     cell.textLabel.text = product.name;
     
-    // Display the appropriate image product
     cell.imageView.image = [UIImage imageNamed:product.image];
 
     return cell;
@@ -87,14 +80,13 @@
 }
 */
 
-
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        
-        Product *p = [self.company.productsList objectAtIndex:indexPath.row];
-        
-        [self.dAO deleteManagedObject:p];
+
+        NSString *productToDelete = [NSString stringWithFormat:@"%@", [self.company.productsList[indexPath.row]name]];
+
+        [self.dAO deleteManagedObject:productToDelete];
         
         [self.company.productsList removeObjectAtIndex:indexPath.row];
         
@@ -102,8 +94,7 @@
             }
     
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }µ
+    }
 }
 
 

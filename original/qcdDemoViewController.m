@@ -10,16 +10,12 @@
 
 
 @interface qcdDemoViewController ()
-
-
 @end
 
 @implementation qcdDemoViewController
 
-// initWithSytle sets up the tableview
 - (id)initWithStyle:(UITableViewStyle)style
 {
-    // initialize the tableview
     self = [super initWithStyle:style];
     
     if (self) {
@@ -30,40 +26,34 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.dAO  = [[DAO alloc]init];
-    [self.dAO createManagedObjects];
-    [self.dAO addProductsToCompanies];
     
+    self.dAO  = [[DAO alloc]init];
+    
+    [self.dAO checkForCoreData];
+
     self.title = @"Mobile Device Makers";
    
-    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 
     [super viewWillAppear:animated];
-   // [self getRequest];
+    [self getRequest];
 
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
 }
 
-
-
-
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
 }
 
@@ -82,21 +72,16 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    
-    // Take an item from the companyList and store it in a company object
     Company *company = [self.dAO.companyList objectAtIndex:[indexPath row]];
     
     
     // Display the company name and image in the order of the indexPath
     //cell.textLabel.text = [NSString stringWithFormat:@"%@ $%@", company.name, company.stockPrice];
-    [cell.textLabel setText:[NSString stringWithFormat:@"%@", [company valueForKey:@"name"]]];
+    [cell.textLabel setText:[NSString stringWithFormat:@"%@ $%@", [company valueForKey:@"name"],company.stockPrice]];
     cell.imageView.image = [UIImage imageNamed:company.logo];
 
-    
     return cell;
 }
-
-                        
 
 /*
 // Override to support conditional editing of the table view.
@@ -137,11 +122,6 @@
 }
 */
 
-
-
-
-
-
 #pragma mark - Table view delegate
 
 // In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
@@ -154,23 +134,14 @@
     self.childVC.dAO = self.dAO;
     
     // Displays the list of products
-    self.childVC.company = self.dAO.companyList[indexPath.row]; // indexPath.row is an int that represents the index of the selected company in the companylist
+    self.childVC.company = self.dAO.companyList[indexPath.row];
     
     // Display the appropriate view title based on the indexPath
     self.childVC.title = self.childVC.company.name;
     
     // Push to the childVC view
     [self.navigationController pushViewController:self.childVC animated:YES];
-    
-    
-    
 }
-
-
-
-
-
-
 
 #pragma mark - connection methods
 
@@ -186,8 +157,6 @@
 }
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection {
     
-    
-    // Assign the response data to a string
      NSString *string = [[[NSString alloc] initWithData:self.responseData encoding:NSUTF8StringEncoding] autorelease];
 
      NSLog(@"API Request Finish Loading");
@@ -197,30 +166,20 @@
     // Assign each stockprice to the appropriate company
     for(int i=0; i<self.dAO.companyList.count; i++) {
         [self.dAO.companyList[i] setStockPrice:components[i]];
-        
     }
     
-    
     [self.tableView reloadData];
-    
 }
 
-
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error{
     NSLog(@"error = %@", [error localizedDescription]);
     NSString *message = [NSString stringWithFormat:@"%@", [error localizedDescription]];
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Error" message:message delegate:self cancelButtonTitle:@"Close" otherButtonTitles:nil];
     [alert show];
 }
 
-
-
-
 -(void)getRequest{
     
-    // Create the request
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://finance.yahoo.com/d/quotes.csv?s=AAPL+SSNLF+AMZN+GOOG&f=l1"]];
     
     NSMutableURLRequest *getRequest = [NSMutableURLRequest requestWithURL:url];
@@ -233,7 +192,6 @@
     // Create URL connection and fire request
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:getRequest delegate:self];
     conn = nil;
-    
 }
 
 @end

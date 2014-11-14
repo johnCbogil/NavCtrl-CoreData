@@ -30,8 +30,6 @@
 		AA429CCD1A13C75100755A79 /* ManagedProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = AA429CCC1A13C75100755A79 /* ManagedProduct.m */; };
 		AA57036919DDB7C400C32282 /* GrandChildVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AA57036719DDB7C400C32282 /* GrandChildVC.m */; };
 		AA57036A19DDB7C400C32282 /* GrandChildVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA57036819DDB7C400C32282 /* GrandChildVC.xib */; };
-		AA5B84781A142B610004BA6B /* CustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA5B84771A142B610004BA6B /* CustomCell.xib */; };
-		AA5B847B1A142C840004BA6B /* CustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AA5B847A1A142C840004BA6B /* CustomCell.m */; };
 		AA6779001A0AC4F9009A5253 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA6778FF1A0AC4F9009A5253 /* CoreData.framework */; };
 		AA7FBCFB19FAF24200C0AFC0 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AA7FBCFA19FAF24200C0AFC0 /* libsqlite3.0.dylib */; };
 		AAAC0AB61A092ACB0090A4A5 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAAC0AB51A092ACB0090A4A5 /* SystemConfiguration.framework */; };
@@ -84,9 +82,6 @@
 		AA57036619DDB7C400C32282 /* GrandChildVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrandChildVC.h; sourceTree = "<group>"; };
 		AA57036719DDB7C400C32282 /* GrandChildVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrandChildVC.m; sourceTree = "<group>"; };
 		AA57036819DDB7C400C32282 /* GrandChildVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GrandChildVC.xib; sourceTree = "<group>"; };
-		AA5B84771A142B610004BA6B /* CustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomCell.xib; sourceTree = "<group>"; };
-		AA5B84791A142C840004BA6B /* CustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCell.h; sourceTree = "<group>"; };
-		AA5B847A1A142C840004BA6B /* CustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCell.m; sourceTree = "<group>"; };
 		AA6778FF1A0AC4F9009A5253 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AA7FBCFA19FAF24200C0AFC0 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libsqlite3.0.dylib; sourceTree = "<group>"; };
 		AAAC0AB51A092ACB0090A4A5 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -144,9 +139,6 @@
 				48A656E518163C1B00746D36 /* qcdDemoViewController.xib */,
 				48A656EA18163F8700746D36 /* ChildViewController.xib */,
 				AA57036819DDB7C400C32282 /* GrandChildVC.xib */,
-				AA5B84771A142B610004BA6B /* CustomCell.xib */,
-				AA5B84791A142C840004BA6B /* CustomCell.h */,
-				AA5B847A1A142C840004BA6B /* CustomCell.m */,
 				48A656BA18163BF200746D36 /* NavCtrl */,
 				48A656D318163BF200746D36 /* NavCtrlTests */,
 				48A656B318163BF200746D36 /* Frameworks */,
@@ -293,7 +285,6 @@
 			files = (
 				48A656EE1816468000746D36 /* Sunflower.gif in Resources */,
 				48A656E718163C1B00746D36 /* qcdDemoViewController.xib in Resources */,
-				AA5B84781A142B610004BA6B /* CustomCell.xib in Resources */,
 				AA57036A19DDB7C400C32282 /* GrandChildVC.xib in Resources */,
 				48A656BF18163BF200746D36 /* InfoPlist.strings in Resources */,
 				48A656C718163BF200746D36 /* Images.xcassets in Resources */,
@@ -318,7 +309,6 @@
 			files = (
 				AA3E1C9C19E33FA800AFFBEA /* Product.m in Sources */,
 				48A656E618163C1B00746D36 /* qcdDemoViewController.m in Sources */,
-				AA5B847B1A142C840004BA6B /* CustomCell.m in Sources */,
 				AA3E1C9919E33B6F00AFFBEA /* Company.m in Sources */,
 				48A656C518163BF200746D36 /* qcdDemoAppDelegate.m in Sources */,
 				AABEA4121A0C122C0041A961 /* Data.xcdatamodeld in Sources */,

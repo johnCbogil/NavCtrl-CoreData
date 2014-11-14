@@ -17,7 +17,6 @@
 
 @interface qcdDemoViewController : UITableViewController
 
-// Link for the next view
 @property (nonatomic, retain) IBOutlet ChildViewController * childVC;
 
 @property (nonatomic, strong) DAO *dAO;
