@@ -257,7 +257,7 @@
     for (int i = 0; i < self.productsList.count; i++) {
         if (product == [self.productsList[i] name]) {
             [self.productsList removeObjectAtIndex:i];
-            [self.productsList[i] release];
+            //[self.productsList[i] release];
             break;
         }
     }
