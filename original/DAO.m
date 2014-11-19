@@ -51,7 +51,7 @@
             self.companyList = [[NSMutableArray alloc]init];
             for(int i=0; i<fetchedCompaniesObjects.count; i++)
             {
-                // Initialize a new product for each managedProduct
+                // Initialize a new company for each managedProduct
                 Company *company = [[Company alloc]init];
                 
                 // name is a get method sent to managedCompanyObject[i]
@@ -62,7 +62,8 @@
                 
                 // Add products to productsList
                 [self.companyList addObject:company];
-                NSLog(@"%@", self.companyList[i]);
+                //NSLog(@"%@", self.companyList[i]);
+
             }
         
         // Fetch Products
@@ -87,17 +88,18 @@
                 product.url = [fetchedProductsObjects[i] url];
                 product.image = [fetchedProductsObjects[i] image];
                 
+                
                 // Add products to productsList
                 [self.productsList addObject:product];
                 NSLog(@"%@", self.productsList[i]);
+                //[product release];
+
             }
             
             [self addProductsToCompanies];
         }
-        
     }
-    
-    }
+}
 
 -(void)createManagedObjects{
 
@@ -203,6 +205,8 @@
     
     [self fetchManagedObjects];
     [self addProductsToCompanies];
+    NSError * error;
+    [self.managedObjectContext save:&error];
 }
 
 -(void)addProductsToCompanies{
@@ -220,7 +224,7 @@
             for(int j=0; j<[self.productsList count]; j++)
             {
                 // Assign each product to its own product object
-                Product *product = self.productsList[j];
+                Product * product = self.productsList[j];
                 
                 // If the companyID's match
                 if(company.companyID == product.productID){
@@ -231,6 +235,7 @@
                 }
             }
         }
+    //[self.productsList removeAllObjects];
 }
 
 -(void)deleteManagedObject:(NSString*)product{
@@ -247,6 +252,19 @@
     for (NSManagedObject *product in fetchedProducts) {
         [self.managedObjectContext deleteObject:product];
     }
+
+    NSLog(@"%lu",(unsigned long)self.productsList.count);
+    for (int i = 0; i < self.productsList.count; i++) {
+        if (product == [self.productsList[i] name]) {
+            [self.productsList removeObjectAtIndex:i];
+            [self.productsList[i] release];
+            break;
+        }
+    }
+    NSLog(@"%lu",(unsigned long)self.productsList.count);
+    
+    
+    
     NSError *error = nil;
     if (![self.managedObjectContext save:&error]) {
         NSLog(@"Can't Delete! %@ %@", error, [error localizedDescription]);

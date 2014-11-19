@@ -62,11 +62,10 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    Product *product = [self.company.productsList objectAtIndex:[indexPath row]];
+    cell.textLabel.text = [[self.company.productsList objectAtIndex:[indexPath row]] name];
+    cell.imageView.image = [UIImage imageNamed:[[self.company.productsList objectAtIndex:[indexPath row]]image]];
+
     
-    cell.textLabel.text = product.name;
-    
-    cell.imageView.image = [UIImage imageNamed:product.image];
 
     return cell;
 }
@@ -91,7 +90,8 @@
         [self.company.productsList removeObjectAtIndex:indexPath.row];
         
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            }
+        
+    }
     
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
     }
@@ -130,16 +130,15 @@
     self.webVC.webView = webView;
  
     // Create a product object
-    Product *product = [[Product alloc]init];
     
     // Take the chosen product and store it in the new object we just created^^
-    product = [self.company.productsList objectAtIndex:[indexPath row]];
     
     // take the product's URL and send it to the webVC
-    self.webVC.url = product.url;
+    self.webVC.url = [[self.company.productsList objectAtIndex:[indexPath row]]url];
     
     // Push the view controller.
     [self.navigationController pushViewController:self.webVC animated:YES];
+    
 }
 
 

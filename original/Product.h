@@ -13,7 +13,7 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *image;
 @property (nonatomic, strong) NSString *url;
-@property (nonatomic) int *productID;
+@property int productID;
 
 
 @end
