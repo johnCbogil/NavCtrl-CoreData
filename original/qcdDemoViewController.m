@@ -76,7 +76,6 @@
     
     
     // Display the company name and image in the order of the indexPath
-    //cell.textLabel.text = [NSString stringWithFormat:@"%@ $%@", company.name, company.stockPrice];
     [cell.textLabel setText:[NSString stringWithFormat:@"%@ $%@", [company valueForKey:@"name"],company.stockPrice]];
     cell.imageView.image = [UIImage imageNamed:company.logo];
 

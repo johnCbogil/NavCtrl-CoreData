@@ -32,13 +32,16 @@
 
     
     if(count==0) {
+        NSLog(@"Creating managedObjects now");
         [self createManagedObjects];
     } else {
+        NSLog(@"Fetching managedObjects now");
         [self fetchManagedObjects];
     }
 }
 
 -(void)fetchManagedObjects{
+    
         // Fetch Companies
         NSFetchRequest *companiesFetchRequest = [[NSFetchRequest alloc] init];
         NSEntityDescription *companiesEntity = [NSEntityDescription entityForName:@"ManagedCompany" inManagedObjectContext:self.managedObjectContext];
@@ -62,7 +65,7 @@
                 
                 // Add products to productsList
                 [self.companyList addObject:company];
-                //NSLog(@"%@", self.companyList[i]);
+                [company release];
 
             }
         
@@ -91,8 +94,6 @@
                 
                 // Add products to productsList
                 [self.productsList addObject:product];
-                NSLog(@"%@", self.productsList[i]);
-                //[product release];
 
             }
             
@@ -204,12 +205,12 @@
 
     
     [self fetchManagedObjects];
-    [self addProductsToCompanies];
     NSError * error;
     [self.managedObjectContext save:&error];
 }
 
 -(void)addProductsToCompanies{
+    NSLog(@"Adding products to companies now");
         
         // Iterate through each company
         for(int i=0; i<[self.companyList count]; i++)
@@ -231,11 +232,12 @@
                     
                     // Add the product to the appropriate company's productList
                     [company.productsList addObject: product];
+                    [product release];
                     
                 }
             }
         }
-    //[self.productsList removeAllObjects];
+    [self.productsList removeAllObjects];
 }
 
 -(void)deleteManagedObject:(NSString*)product{
@@ -251,25 +253,18 @@
     
     for (NSManagedObject *product in fetchedProducts) {
         [self.managedObjectContext deleteObject:product];
+        NSLog(@"Deleting object now");
     }
-
-    NSLog(@"%lu",(unsigned long)self.productsList.count);
-    for (int i = 0; i < self.productsList.count; i++) {
-        if (product == [self.productsList[i] name]) {
-            [self.productsList removeObjectAtIndex:i];
-            //[self.productsList[i] release];
-            break;
-        }
-    }
-    NSLog(@"%lu",(unsigned long)self.productsList.count);
-    
-    
     
     NSError *error = nil;
     if (![self.managedObjectContext save:&error]) {
         NSLog(@"Can't Delete! %@ %@", error, [error localizedDescription]);
         return;
-}
+    }
+        else{
+            NSLog(@"Saving context now");
+        }
+
 }
 
 @end
